@@ -8,4 +8,36 @@
     tools:context=".VideoPlayerActivity"
     tools:showIn="@layout/activity_video_player">
 
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/video_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未知"/>
+
+        <TextView
+            android:id="@+id/video_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="未知"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/video_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"/>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
