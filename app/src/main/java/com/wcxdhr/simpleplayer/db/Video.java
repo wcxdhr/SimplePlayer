@@ -4,10 +4,6 @@ import org.litepal.crud.LitePalSupport;
 
 public class Video extends LitePalSupport {
 
-    private int id;
-
-    private int listid;
-
     private String name;
 
     private String author;
@@ -16,20 +12,14 @@ public class Video extends LitePalSupport {
 
     private int count;
 
-    public int getId() {
-        return id;
+    private String category;
+
+    public String getCategory() {
+        return category;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getListid() {
-        return listid;
-    }
-
-    public void setListid(int listid) {
-        this.listid = listid;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getName() {

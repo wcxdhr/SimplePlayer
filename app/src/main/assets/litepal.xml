@@ -33,7 +33,7 @@
     -->
     <list>
         <mapping class="com.wcxdhr.simpleplayer.db.Video" />
-        <mapping class="com.wcxdhr.simpleplayer.db.VideoList" />
+        <mapping class="com.wcxdhr.simpleplayer.db.Category" />
     </list>
 
     <!--
