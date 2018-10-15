@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drama"
+            android:title="电视剧" />
+        <item
+            android:id="@+id/movie"
+            android:title="电影" />
+        <item
+            android:id="@+id/music"
+            android:title="音乐" />
+        <item
+            android:id="@+id/game"
+            android:title="游戏" />
+        <item
+            android:id="@+id/cartoon"
+            android:title="动画" />
+        <item
+            android:id="@+id/life"
+            android:title="生活" />
+    </group>
+
+</menu>

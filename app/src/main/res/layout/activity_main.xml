@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/category_fragment"
+        android:name="com.wcxdhr.simpleplayer.CategoryFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
+        <fragment
+            android:id="@+id/videolist_fragment"
+            android:name="com.wcxdhr.simpleplayer.VideoListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:weight="8" />
+    </FrameLayout>
+
+</LinearLayout>
+
+
+
+<!--
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,4 +44,4 @@
         android:gravity="center"
         android:text="click me" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>-->
