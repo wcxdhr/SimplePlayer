@@ -9,7 +9,7 @@ public class Category extends LitePalSupport {
 
     private String name;
 
-    private List<Video> videos = new ArrayList<Video>();
+    private int id;
 
     public String getName() {
         return name;
@@ -19,12 +19,12 @@ public class Category extends LitePalSupport {
         this.name = name;
     }
 
-    public List<Video> getVideos() {
-        return videos;
+    public int getId() {
+        return id;
     }
 
-    public void setVideos(List<Video> videos) {
-        this.videos = videos;
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

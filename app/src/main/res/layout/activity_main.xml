@@ -8,14 +8,14 @@
 
     <fragment
         android:id="@+id/category_fragment"
-        android:name="com.wcxdhr.simpleplayer.CategoryFragment"
+        android:name="com.wcxdhr.simpleplayer.fragment.CategoryFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <fragment
         android:id="@+id/video_list_fragment"
-        android:name="com.wcxdhr.simpleplayer.VideoListFragment"
+        android:name="com.wcxdhr.simpleplayer.fragment.VideoListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8" />

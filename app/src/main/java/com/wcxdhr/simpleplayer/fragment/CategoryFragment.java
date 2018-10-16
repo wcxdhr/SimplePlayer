@@ -1,5 +1,6 @@
-package com.wcxdhr.simpleplayer;
+package com.wcxdhr.simpleplayer.fragment;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wcxdhr.simpleplayer.R;
+import com.wcxdhr.simpleplayer.adapter.CategoryAdapter;
 import com.wcxdhr.simpleplayer.db.Category;
+import com.wcxdhr.simpleplayer.db.DataBaseHelper;
+import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.callback.DatabaseListener;
@@ -22,52 +27,39 @@ public class CategoryFragment extends Fragment {
 
     private View view;
 
+    public static final String TAG = "TEST";
+
     private List<Category> CategoryList = new ArrayList<>();
+
+    private VideoDao videoDao;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.category_frag, container, false);
+        videoDao = new VideoDao(getContext());
         initCategories();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        CategoryAdapter adapter = new CategoryAdapter(CategoryList);
+        VideoListFragment videoListFragment = (VideoListFragment) getFragmentManager().findFragmentById(R.id.video_list_fragment);
+        CategoryAdapter adapter = new CategoryAdapter(CategoryList,getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
     private void initCategories() {
-        initDatabase();
-        //SQLiteDatabase db = LitePal.getDatabase();
-        CategoryList = LitePal.findAll(Category.class);
-        for (Category category: CategoryList) {
-            Log.d("check", category.getName());
+        Cursor cursor = videoDao.getCategories();
+        if (cursor.moveToFirst()) {
+            do {
+                Category category = new Category();
+                category.setName(cursor.getString(cursor.getColumnIndex("name")));
+                category.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                CategoryList.add(category);
+            } while (cursor.moveToNext());
         }
+        cursor.close();
     }
 
-    private void initDatabase(){
-        LitePal.registerDatabaseListener(new DatabaseListener() {
-            @Override
-            public void onCreate() {
-                Category cartoon = new Category();
-                cartoon.setName("动画");
-                cartoon.save();
-                Category drama = new Category();
-                drama.setName("电视剧");
-                drama.save();
-                Category movie = new Category();
-                movie.setName("电影");
-                movie.save();
-                Category music = new Category();
-                music.setName("音乐");
-                music.save();
-            }
 
-            @Override
-            public void onUpgrade(int oldVersion, int newVersion) {
-
-            }
-        });
-    }
 }
