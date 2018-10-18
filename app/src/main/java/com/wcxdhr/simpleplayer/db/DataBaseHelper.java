@@ -6,15 +6,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    public static final String CREATE_VIDEO = "create table Video ("
+    public static final String CREATE_VIDEO = "create table Video("
             +"id integer primary key autoincrement, "
             +"name text, "
             +"author text, "
             +"path text, "
             +"count integer, "
-            +"category text)";
+            +"category integer)";
 
-    public static final String CREATE_CATEGORY = "create table Category ("
+    public static final String CREATE_CATEGORY = "create table Category("
             +"id integer primary key autoincrement, "
             +"name text)";
 
@@ -35,8 +35,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("insert into Category (id, name)values(4,'音乐')");
         db.execSQL("insert into Category (id, name)values(5,'生活')");
         db.execSQL("insert into Category (id, name)values(6,'科技')");
-
-
     }
 
     @Override

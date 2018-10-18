@@ -1,8 +1,9 @@
 package com.wcxdhr.simpleplayer.db;
 
-import org.litepal.crud.LitePalSupport;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Video extends LitePalSupport {
+public class Video implements Parcelable{
 
     private int id;
 
@@ -63,4 +64,39 @@ public class Video extends LitePalSupport {
     public void setPath(String path) {
         this.path = path;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(author);
+        dest.writeString(path);
+        dest.writeInt(count);
+        dest.writeInt(category);
+    }
+
+    public static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {
+
+        @Override
+        public Video createFromParcel(Parcel source) {
+            Video video = new Video();
+            video.id = source.readInt();
+            video.name = source.readString();
+            video.author = source.readString();
+            video.path = source.readString();
+            video.count = source.readInt();
+            video.category = source.readInt();
+            return video;
+        }
+        @Override
+        public Video[] newArray(int size) {
+            return new Video[size];
+        }
+
+    };
 }

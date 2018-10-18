@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.db.Category;
 import com.wcxdhr.simpleplayer.fragment.VideoListFragment;
@@ -51,6 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 Category category = mCategoryList.get(holder.getAdapterPosition());
                 FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                 VideoListFragment videoListFragment = (VideoListFragment)manager.findFragmentById(R.id.video_list_fragment);
+                LogUtil.d("CategoryAdapter: "+String.valueOf(category.getId()));
                 videoListFragment.refresh(category.getId());
             }
         });

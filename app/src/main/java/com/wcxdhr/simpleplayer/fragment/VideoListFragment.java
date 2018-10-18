@@ -1,16 +1,29 @@
 package com.wcxdhr.simpleplayer.fragment;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
+import com.wcxdhr.simpleplayer.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
 import com.wcxdhr.simpleplayer.db.Category;
 import com.wcxdhr.simpleplayer.db.Video;
@@ -19,7 +32,9 @@ import com.wcxdhr.simpleplayer.db.VideoDao;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoListFragment extends Fragment {
+import static android.content.Context.MODE_PRIVATE;
+
+public class VideoListFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
@@ -35,6 +50,8 @@ public class VideoListFragment extends Fragment {
 
     private Button add_button;
 
+    private int category;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.videolist_frag, container, false);
@@ -45,10 +62,57 @@ public class VideoListFragment extends Fragment {
         adapter = new VideoAdapter(VideoList);
         recyclerView.setLayoutManager(LayoutManager);
         recyclerView.setAdapter(adapter);
+        add_button = (Button) view.findViewById(R.id.add_button);
+        add_button.setOnClickListener(this);
+        adapter.setOnVideoItemClickListener(new VideoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                SharedPreferences.Editor editor = getContext().getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putInt("category", category);
+                editor.apply();
+                Video video = VideoList.get(position);
+                Intent intent = new Intent(getContext(),VideoPlayerActivity.class);
+                intent.putExtra("video_data", video);
+                startActivityForResult(intent, 1);
+            }
+        });
         return view;
     }
 
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.add_button:
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }else {
+                    chooseVideo();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    chooseVideo();
+                }else{
+                    Toast.makeText(getContext(), "拒绝了", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
     public void refresh(int category){
+        LogUtil.d("用于刷新的category: "+String.valueOf(category));
+        this.category = category;
         VideoList.clear();
         View visibilityLayout = view.findViewById(R.id.videolist_view);
         visibilityLayout.setVisibility(View.VISIBLE);
@@ -57,20 +121,68 @@ public class VideoListFragment extends Fragment {
     }
 
     private void addVideotoList(int category){
+        LogUtil.d("addVideotoList: "+String.valueOf(category));
         videoDao = new VideoDao(getContext());
         Cursor cursor = videoDao.getVideos(category);
-        if (cursor.moveToFirst()) {
-            do {
-                Video video = new Video();
-                video.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                video.setAuthor(cursor.getString(cursor.getColumnIndex("author")));
-                video.setName(cursor.getString(cursor.getColumnIndex("name")));
-                video.setCount(cursor.getInt(cursor.getColumnIndex("count")));
-                video.setPath(cursor.getString(cursor.getColumnIndex("path")));
-                video.setCategory(category);
-                VideoList.add(video);
-            } while (cursor.moveToNext());
+        if (cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Video video = new Video();
+                    video.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                    video.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow("author")));
+                    video.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    video.setCount(cursor.getInt(cursor.getColumnIndexOrThrow("count")));
+                    video.setPath(cursor.getString(cursor.getColumnIndexOrThrow("path")));
+                    video.setCategory(category);
+                    VideoList.add(video);
+                } while (cursor.moveToNext());
+            }
         }
         cursor.close();
+    }
+
+    private void chooseVideo(){
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences("data", MODE_PRIVATE).edit();
+        editor.putInt("category",category);
+        editor.apply();
+        LogUtil.d("存在本地的category："+String.valueOf(category));
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 1);
+                /*Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                String[] projections = {
+                        MediaStore.Video.Media.DISPLAY_NAME,
+                        MediaStore.Video.Media.DATA,
+                };
+                Cursor cursor = getActivity().getContentResolver().query(uri,projections,null,null,null);
+
+                    while ()*/
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == getActivity().RESULT_OK){
+                Uri uri =data.getData();
+                Cursor cursor = getActivity().getContentResolver().query(uri,null,null,null,null);
+                if (cursor != null){
+                    if (cursor.moveToFirst()){
+                        Video video = new Video();
+                        video.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)));
+                        video.setAuthor(cursor.getString((cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST))));
+                        video.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
+                        video.setCount(0);
+                        SharedPreferences preferences = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+                        category = preferences.getInt("category", 1);
+                        LogUtil.d("取出的category值："+String.valueOf(category));
+                        video.setCategory(category);
+                        if (videoDao.addVideo(video) == true) {
+                            VideoList.add(video);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.wcxdhr.simpleplayer.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,15 @@ import com.wcxdhr.simpleplayer.db.Video;
 
 import java.util.List;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>  implements  View.OnClickListener{
 
     private List<Video> mVideoList;
+
+    private OnItemClickListener mOnVideoItemClickListener = null;
+
+    public static interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView video_name;
@@ -35,8 +43,24 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+        view.setOnClickListener(this);
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences editor = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+                editor
+            }
+        });*/
         return holder;
+    }
+
+    @Override
+    public void onClick(View view){
+        if (mOnVideoItemClickListener != null) {
+            mOnVideoItemClickListener.onItemClick(view, (int)view.getTag());
+        }
     }
 
     @Override
@@ -44,11 +68,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         Video video = mVideoList.get(position);
         holder.video_name.setText(video.getName());
         holder.video_author.setText(video.getAuthor());
-        holder.video_count.setText(video.getCount());
+        holder.video_count.setText(String.valueOf(video.getCount()));
+        holder.itemView.setTag(position);
     }
 
     @Override
     public int getItemCount(){
         return mVideoList.size();
+    }
+
+    public void setOnVideoItemClickListener(OnItemClickListener listener) {
+        this.mOnVideoItemClickListener = listener;
     }
 }

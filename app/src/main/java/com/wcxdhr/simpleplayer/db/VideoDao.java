@@ -1,8 +1,13 @@
 package com.wcxdhr.simpleplayer.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.wcxdhr.simpleplayer.Log.LogUtil;
 
 public class VideoDao {
 
@@ -10,7 +15,10 @@ public class VideoDao {
 
     private SQLiteDatabase db;
 
+    private Context context;
+
     public VideoDao(Context context){
+        this.context = context;
         helper = new DataBaseHelper(context,"VideoStore.db",null,1);
     }
 
@@ -20,10 +28,31 @@ public class VideoDao {
         return cursor;
     }
 
-    public Cursor getVideos(int categoryid){
+    public Cursor getVideos(int category){
         db = helper.getWritableDatabase();
-        Cursor cursor = db.query("Video", new String[]{"category"},"category=?",new String[]{String.valueOf(categoryid)},null,null,null);
+        //Cursor cursor = db.query("Video", null,null,null,null,null,null);
+        Cursor cursor = db.query("Video", null,"category=?",new String[]{String.valueOf(category)},null,null,null);
         return cursor;
+    }
+
+    public boolean addVideo(Video video) {
+        db = helper.getWritableDatabase();
+        Cursor cursor = db.query("Video",null,"name=?",new String[]{video.getName()},null,null,null);
+        if (cursor.getCount() > 0) {
+            Toast.makeText(context,"视频已存在，请勿重复添加",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+            ContentValues values = new ContentValues();
+            values.put("name", video.getName());
+            values.put("author", video.getAuthor());
+            values.put("path",video.getPath());
+            values.put("count",video.getCount());
+            values.put("category",video.getCategory());
+            LogUtil.d("addVideo: "+String.valueOf(video.getCategory()));
+            db.insert("Video", null, values);
+            return true;
+        }
     }
 
     public void delete(int id){

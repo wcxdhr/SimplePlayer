@@ -1,6 +1,7 @@
 package com.wcxdhr.simpleplayer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,11 +16,15 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.wcxdhr.simpleplayer.db.Video;
+
 import java.io.File;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
     private VideoView test;
+
+    private Video video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        video = (Video)getIntent().getParcelableExtra("video_data");
+
         test = (VideoView) findViewById(R.id.video_view);
 
         test.setMediaController(new MediaController(this));
@@ -53,10 +61,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
 
 
+
     }
 
     private void initVideoPath(){
-        File file = new File(Environment.getExternalStorageDirectory(), "Screenrecord-2017-07-04-00-05-58-593.mp4");
+
+        File file = new File(video.getPath());
         test.setVideoPath(file.getPath());
     }
 

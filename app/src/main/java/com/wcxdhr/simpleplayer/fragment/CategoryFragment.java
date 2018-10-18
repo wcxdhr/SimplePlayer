@@ -41,7 +41,6 @@ public class CategoryFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        VideoListFragment videoListFragment = (VideoListFragment) getFragmentManager().findFragmentById(R.id.video_list_fragment);
         CategoryAdapter adapter = new CategoryAdapter(CategoryList,getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
