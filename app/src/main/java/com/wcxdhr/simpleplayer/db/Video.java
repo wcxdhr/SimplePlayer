@@ -1,5 +1,6 @@
 package com.wcxdhr.simpleplayer.db;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -64,6 +65,7 @@ public class Video implements Parcelable{
     public void setPath(String path) {
         this.path = path;
     }
+
 
     @Override
     public int describeContents() {

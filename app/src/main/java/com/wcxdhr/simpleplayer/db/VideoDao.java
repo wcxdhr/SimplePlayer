@@ -60,6 +60,13 @@ public class VideoDao {
         db.delete("Video","id = ?",new String[]{String.valueOf(id)});
     }
 
+    public void updateCount(Video video, int count) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("count", count);
+        db.update("Video",values,"id = ?", new String[]{String.valueOf(video.getId())});
+    }
+
 
 }
 

@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="8"></android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
@@ -18,7 +18,10 @@
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/colorPrimary"
+            android:textColor="#fff"
             android:text="add"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

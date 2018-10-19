@@ -1,12 +1,16 @@
 package com.wcxdhr.simpleplayer.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -52,10 +56,13 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
 
     private int category;
 
+    private Bitmap bitmap;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.videolist_frag, container, false);
-        addVideotoList(1);
+        category = 1;
+        addVideotoList(category);
         //showRecyclerView();
         recyclerView = (RecyclerView) view.findViewById(R.id.videolist_view);
         LayoutManager = new LinearLayoutManager(getActivity());
@@ -73,9 +80,35 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                 Video video = VideoList.get(position);
                 Intent intent = new Intent(getContext(),VideoPlayerActivity.class);
                 intent.putExtra("video_data", video);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 2);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                final Video video = VideoList.get(position);
+                LogUtil.d("长按事件");
+                AlertDialog.Builder delete_dialog = new AlertDialog.Builder(getContext());
+                delete_dialog.setTitle("警告");
+                delete_dialog.setMessage("确认删除该视频？");
+                delete_dialog.setCancelable(true);
+                delete_dialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        videoDao.delete(video.getId());
+                        refresh(category);
+                    }
+                });
+                delete_dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                delete_dialog.show();
             }
         });
+
         return view;
     }
 
@@ -177,6 +210,7 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                         LogUtil.d("取出的category值："+String.valueOf(category));
                         video.setCategory(category);
                         if (videoDao.addVideo(video) == true) {
+                            //refresh(category);
                             VideoList.add(video);
                             adapter.notifyDataSetChanged();
                         }
@@ -184,5 +218,12 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                 }
             }
         }
+        else if (requestCode == 2) {
+            SharedPreferences preferences = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+            category = preferences.getInt("category", 1);
+            refresh(category);
+        }
     }
+
+
 }
