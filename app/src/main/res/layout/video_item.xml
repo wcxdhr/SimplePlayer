@@ -3,13 +3,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
     android:padding="10dp">
 
     <ImageView
         android:id="@+id/video_bitmap"
         android:layout_width="160dp"
         android:layout_height="90dp"
-        android:padding="10dp"/>
+        android:padding="5dp"/>
 
     <LinearLayout
         android:orientation="vertical"

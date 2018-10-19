@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.db.Video;
 
@@ -95,7 +96,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         holder.video_name.setText(video.getName());
         holder.video_author.setText(video.getAuthor());
         holder.video_count.setText(String.valueOf(video.getCount()));
-        Glide.with(mContext).load(video.getPath()).into(holder.video_bitmap);
+        Glide.with(mContext)
+                .load(video.getPath())
+                .apply(RequestOptions.centerCropTransform())
+                .into(holder.video_bitmap);
         holder.itemView.setTag(position);
     }
 
