@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -51,6 +52,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     private PlayerView playerView;
 
+    private SimpleExoPlayer player;
+
     private MediaSource videoSource;
 
     private com.google.android.exoplayer2.upstream.DataSource.Factory dataSourceFactory;
@@ -59,17 +62,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         Intent intent = getIntent();
         video = (Video)getIntent().getParcelableExtra("video_data");
@@ -78,13 +70,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoAuthor = (TextView) findViewById(R.id.video_author);
         videoCount = (TextView) findViewById(R.id.video_count);
 
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(this);
+        player = ExoPlayerFactory.newSimpleInstance(this);
         playerView = (PlayerView) findViewById(R.id.player_view);
         playerView.setPlayer(player);
         dataSourceFactory = new DefaultDataSourceFactory(this,Util.getUserAgent(this,"SimplePlayer"));
-
-        /*player = (VideoView) findViewById(R.id.video_view);
-        player.setMediaController(new MediaController(this));*/
 
         if (ContextCompat.checkSelfPermission(VideoPlayerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
@@ -109,17 +98,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoCount.setText(String.valueOf(video.getCount()));
     }
 
-    /*private void initVideoPath(){
-
-        File file = new File(video.getPath());
-        player.setVideoPath(file.getPath());
-    }*/
-
     @Override
     public void onBackPressed() {
         video.setCount(video.getCount()+1);
         VideoDao videoDao = new VideoDao(this);
         videoDao.updateCount(video,video.getCount());
+        player.release();
         finish();
     }
 
