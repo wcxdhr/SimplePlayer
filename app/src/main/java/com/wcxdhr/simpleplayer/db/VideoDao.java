@@ -30,7 +30,6 @@ public class VideoDao {
 
     public Cursor getVideos(int category){
         db = helper.getWritableDatabase();
-        //Cursor cursor = db.query("Video", null,null,null,null,null,null);
         Cursor cursor = db.query("Video", null,"category=?",new String[]{String.valueOf(category)},null,null,null);
         return cursor;
     }
@@ -77,6 +76,20 @@ public class VideoDao {
         ContentValues values = new ContentValues();
         values.put("count", count);
         db.update("Video",values,"id = ?", new String[]{String.valueOf(video.getId())});
+    }
+
+    public void addComment(Comment comment) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("content", comment.getContent());
+        values.put("video_id", comment.getVideo_id());
+        db.insert("Comment",null, values );
+    }
+
+    public Cursor getComments(int video_id) {
+        db = helper.getWritableDatabase();
+        Cursor cursor = db.query("Comment", null, "video_id=?",new String[]{String.valueOf(video_id)}, null, null,null);
+        return cursor;
     }
 
 

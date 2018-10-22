@@ -3,6 +3,7 @@ package com.wcxdhr.simpleplayer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.wcxdhr.simpleplayer.adapter.CommentAdapter;
 import com.wcxdhr.simpleplayer.db.Comment;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
@@ -42,7 +45,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-public class VideoPlayerActivity extends AppCompatActivity {
+public class VideoPlayerActivity extends AppCompatActivity implements View.OnClickListener{
 
     //private VideoView player;
 
@@ -50,7 +53,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     private List<Comment> commentList = new ArrayList<>();
 
-    //private VideoDao videoDao;
+    private VideoDao videoDao;
 
     private TextView videoName;
 
@@ -64,20 +67,28 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     private MediaSource videoSource;
 
+    private EditText commentText;
+
+    private CommentAdapter adapter;
+
     private com.google.android.exoplayer2.upstream.DataSource.Factory dataSourceFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-
-        Button sendBtn = (Button) findViewById(R.id.send_comment);
-        EditText commentText = (EditText) findViewById(R.id.comment_text);
-        RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
-
+        videoDao = new VideoDao(this);
         Intent intent = getIntent();
         video = (Video)getIntent().getParcelableExtra("video_data");
-
+        initComment();
+        Button sendBtn = (Button) findViewById(R.id.send_btn);
+        sendBtn.setOnClickListener(this);
+        commentText = (EditText) findViewById(R.id.comment_text);
+        RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        adapter = new CommentAdapter(commentList);
+        commentView.setLayoutManager(layoutManager);
+        commentView.setAdapter(adapter);
         videoName = (TextView) findViewById(R.id.video_name);
         videoAuthor = (TextView) findViewById(R.id.video_author);
         videoCount = (TextView) findViewById(R.id.video_count);
@@ -104,6 +115,39 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.send_btn:
+                String content = commentText.getText().toString();
+                commentText.setText("");
+                Comment comment = new Comment();
+                comment.setContent(content);
+                comment.setVideo_id(video.getId());
+                videoDao.addComment(comment);
+                commentList.add(comment);
+                adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void initComment() {
+        Cursor cursor =videoDao.getComments(video.getId());
+        if (cursor.getCount() > 0){
+            if (cursor.moveToFirst()) {
+                do {
+                    Comment comment = new Comment();
+                    comment.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                    comment.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+                    comment.setVideo_id(cursor.getInt(cursor.getColumnIndexOrThrow("video_id")));
+                    commentList.add(comment);
+                }while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        //adapter.notifyDataSetChanged();
+    }
+
     private void setTextView() {
         videoName.setText(video.getName());
         videoAuthor.setText(video.getAuthor());
@@ -113,7 +157,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         video.setCount(video.getCount()+1);
-        VideoDao videoDao = new VideoDao(this);
         videoDao.updateCount(video,video.getCount());
         player.release();
         finish();
