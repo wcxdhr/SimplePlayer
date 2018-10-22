@@ -35,6 +35,18 @@ public class VideoDao {
         return cursor;
     }
 
+    public Cursor findVideosByName(String content) {
+        db = helper.getWritableDatabase();
+        Cursor cursor = db.query("Video",null,"name LIKE ?",new String[]{"%"+content+"%"},null,null,null);
+        return cursor;
+    }
+
+    public Cursor findVideosByAuthor(String content) {
+        db = helper.getWritableDatabase();
+        Cursor cursor = db.query("Video",null,"author LIKE ?",new String[]{"%"+content+"%"},null,null,null);
+        return cursor;
+    }
+
     public boolean addVideo(Video video) {
         db = helper.getWritableDatabase();
         Cursor cursor = db.query("Video",null,"name=?",new String[]{video.getName()},null,null,null);

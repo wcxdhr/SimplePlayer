@@ -11,8 +11,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +30,15 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.wcxdhr.simpleplayer.db.Comment;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -41,6 +47,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
     //private VideoView player;
 
     private Video video;
+
+    private List<Comment> commentList = new ArrayList<>();
 
     //private VideoDao videoDao;
 
@@ -62,6 +70,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        Button sendBtn = (Button) findViewById(R.id.send_comment);
+        EditText commentText = (EditText) findViewById(R.id.comment_text);
+        RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
 
         Intent intent = getIntent();
         video = (Video)getIntent().getParcelableExtra("video_data");

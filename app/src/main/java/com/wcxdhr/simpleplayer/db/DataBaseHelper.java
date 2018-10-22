@@ -18,6 +18,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             +"id integer primary key autoincrement, "
             +"name text)";
 
+    public static final String CREATE_COMMENT = "create table Comment("
+            +"id integer primary key autoincrement, "
+            +"content text, "
+            +"video_id integer)";
+
     private Context mContext;
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -29,6 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_VIDEO);
         db.execSQL(CREATE_CATEGORY);
+        db.execSQL(CREATE_COMMENT);
         db.execSQL("insert into Category (id, name)values(1,'动画')");
         db.execSQL("insert into Category (id, name)values(2,'电影')");
         db.execSQL("insert into Category (id, name)values(3,'电视剧')");

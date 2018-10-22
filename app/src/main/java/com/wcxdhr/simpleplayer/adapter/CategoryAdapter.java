@@ -62,6 +62,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(CategoryAdapter.ViewHolder holder, int position) {
+        if (mCategoryList.get(position) != null) {
+            holder.categoryView.setBackground(context.getResources().getDrawable(R.color.colorPrimary));
+        }
+        else {
+            holder.categoryView.setBackground(context.getResources().getDrawable(R.color.colorBlack));
+        }
         Category category = mCategoryList.get(position);
         holder.categoryName.setText(category.getName());
         Log.d("bind", category.getName());
