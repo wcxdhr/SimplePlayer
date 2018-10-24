@@ -15,13 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/player_view"
+        <FrameLayout
+            android:id="@+id/play_frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/colorBlack">
+            android:layout_height="wrap_content">
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@color/colorBlack">
 
-        </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/video_name"

@@ -80,6 +80,7 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                 Video video = VideoList.get(position);
                 Intent intent = new Intent(getContext(),VideoPlayerActivity.class);
                 intent.putExtra("video_data", video);
+                LogUtil.d("传递的video id： "+video.getId());
                 startActivityForResult(intent, 2);
             }
 
@@ -211,7 +212,9 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                         video.setCategory(category);
                         if (videoDao.addVideo(video) == true) {
                             //refresh(category);
-                            VideoList.add(video);
+                            VideoList.clear();
+                            addVideotoList(category);
+                            //VideoList.add(video);
                             adapter.notifyDataSetChanged();
                         }
                     }

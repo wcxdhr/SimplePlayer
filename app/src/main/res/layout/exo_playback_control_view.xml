@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="bottom"
+    android:background="@color/colorBlack"
+    android:alpha="0.7">
+
+
+
+    <ImageView
+        android:id="@id/exo_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/exo_controls_play"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <ImageView
+        android:id="@id/exo_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/exo_controls_pause"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <ImageView
+        android:id="@+id/exo_fullscreen_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/exo_controls_fullscreen_enter"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        />
+
+    <TextView
+        android:id="@id/exo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:layout_margin="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"/>
+
+    <TextView
+        android:id="@id/exo_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:layout_margin="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"/>
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@id/exo_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+
+        app:layout_constraintBottom_toBottomOf="@id/exo_position"
+        app:layout_constraintLeft_toRightOf="@id/exo_position"
+        app:layout_constraintRight_toLeftOf="@id/exo_duration"
+        app:layout_constraintTop_toTopOf="@id/exo_position"
+        android:layout_margin="10dp"
+        app:played_color="@color/colorWhite"
+        app:unplayed_color="@android:color/black"
+        app:buffered_color="@android:color/darker_gray"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

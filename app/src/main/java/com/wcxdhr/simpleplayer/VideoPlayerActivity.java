@@ -1,7 +1,9 @@
 package com.wcxdhr.simpleplayer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,8 +18,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +38,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.adapter.CommentAdapter;
 import com.wcxdhr.simpleplayer.db.Comment;
 import com.wcxdhr.simpleplayer.db.Video;
@@ -71,6 +78,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
 
     private CommentAdapter adapter;
 
+    private boolean mExoFullScreen;
+
+    private Dialog mFullScreenDialog;
+
+    private ImageView mFullScreenIcon;
+
     private com.google.android.exoplayer2.upstream.DataSource.Factory dataSourceFactory;
 
     @Override
@@ -81,8 +94,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         video = (Video)getIntent().getParcelableExtra("video_data");
         initComment();
+        mExoFullScreen = false;
         Button sendBtn = (Button) findViewById(R.id.send_btn);
-        sendBtn.setOnClickListener(this);
         commentText = (EditText) findViewById(R.id.comment_text);
         RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -96,6 +109,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         player = ExoPlayerFactory.newSimpleInstance(this);
         playerView = (PlayerView) findViewById(R.id.player_view);
         playerView.setPlayer(player);
+        initFullScreenDialog();
+        initFullScreenImg();
         dataSourceFactory = new DefaultDataSourceFactory(this,Util.getUserAgent(this,"SimplePlayer"));
 
         if (ContextCompat.checkSelfPermission(VideoPlayerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -111,9 +126,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
 
         player.setPlayWhenReady(true);
 
+        sendBtn.setOnClickListener(this);
+
         //player.start();
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -132,6 +150,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initComment() {
+        LogUtil.d("根据视频id获取评论： "+video.getId());
         Cursor cursor =videoDao.getComments(video.getId());
         if (cursor.getCount() > 0){
             if (cursor.moveToFirst()) {
@@ -176,5 +195,51 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
             default:
         }
     }
+
+    private void initFullScreenDialog() {
+        mFullScreenDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            public void onBackPressed() {
+                if (mExoFullScreen) {
+                    closeFullScreenDialog();
+                }
+                super.onBackPressed();
+            }
+        };
+    }
+
+    private void openFullScreenDialog() {
+        ((ViewGroup) playerView.getParent()).removeView(playerView);
+        mFullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ));
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.exo_controls_fullscreen_exit));
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        mExoFullScreen = true;
+        mFullScreenDialog.show();
+    }
+
+    private void closeFullScreenDialog() {
+        ((ViewGroup) playerView.getParent()).removeView(playerView);
+        ((FrameLayout) findViewById(R.id.play_frameLayout)).addView(playerView);
+        mExoFullScreen = false;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mFullScreenDialog.dismiss();
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.exo_controls_fullscreen_enter));
+    }
+
+    private void initFullScreenImg() {
+        mFullScreenIcon = (ImageView) findViewById(R.id.exo_fullscreen_enter);
+        mFullScreenIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mExoFullScreen) {
+                    openFullScreenDialog();
+                }
+                else {
+                    closeFullScreenDialog();
+                }
+            }
+        });
+    }
+
+
 
 }
