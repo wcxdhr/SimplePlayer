@@ -1,60 +1,49 @@
-package com.wcxdhr.simpleplayer;
+package com.wcxdhr.simpleplayer.Activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
 import com.wcxdhr.simpleplayer.Log.LogUtil;
+import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.adapter.CommentAdapter;
 import com.wcxdhr.simpleplayer.db.Comment;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 public class VideoPlayerActivity extends AppCompatActivity implements View.OnClickListener{
-
-    //private VideoView player;
 
     private Video video;
 
@@ -70,17 +59,15 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
 
     private PlayerView playerView;
 
-    private SimpleExoPlayer player;
+    /*private SimpleExoPlayer player;
 
-    private MediaSource videoSource;
+    private MediaSource videoSource;*/
 
     private EditText commentText;
 
     private CommentAdapter adapter;
 
     private boolean mExoFullScreen;
-
-    private Dialog mFullScreenDialog;
 
     private ImageView mFullScreenIcon;
 
@@ -91,10 +78,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         videoDao = new VideoDao(this);
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         video = (Video)getIntent().getParcelableExtra("video_data");
         initComment();
         mExoFullScreen = false;
+        mFullScreenIcon = (ImageView) findViewById(R.id.exo_fullscreen_enter);
         Button sendBtn = (Button) findViewById(R.id.send_btn);
         commentText = (EditText) findViewById(R.id.comment_text);
         RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
@@ -106,30 +94,58 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         videoAuthor = (TextView) findViewById(R.id.video_author);
         videoCount = (TextView) findViewById(R.id.video_count);
 
-        player = ExoPlayerFactory.newSimpleInstance(this);
+        /*player = ExoPlayerFactory.newSimpleInstance(this);
         playerView = (PlayerView) findViewById(R.id.player_view);
-        playerView.setPlayer(player);
-        initFullScreenDialog();
-        initFullScreenImg();
-        dataSourceFactory = new DefaultDataSourceFactory(this,Util.getUserAgent(this,"SimplePlayer"));
+        playerView.setPlayer(player);*/
+
 
         if (ContextCompat.checkSelfPermission(VideoPlayerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(VideoPlayerActivity.this, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }else {
-            videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(video.getPath()));
+
         }
         setTextView();
 
-        player.prepare(videoSource);
-
-        player.setPlayWhenReady(true);
-
         sendBtn.setOnClickListener(this);
 
-        //player.start();
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        playerView = (PlayerView) findViewById(R.id.player_view);
+        if (video.getPath() != null && playerView != null) {
+            ExoPlayerVideoHandler.getInstance()
+                    .prepareExoPlayerForUri(this, Uri.parse(video.getPath()), playerView);
+            ExoPlayerVideoHandler.getInstance().goToForeground();
+
+            mFullScreenIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(VideoPlayerActivity.this, FullScreenActivity.class);
+                    intent.putExtra("video_data", video);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ExoPlayerVideoHandler.getInstance().goToBackground();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
     }
 
 
@@ -138,13 +154,20 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.send_btn:
                 String content = commentText.getText().toString();
-                commentText.setText("");
-                Comment comment = new Comment();
-                comment.setContent(content);
-                comment.setVideo_id(video.getId());
-                videoDao.addComment(comment);
-                commentList.add(comment);
-                adapter.notifyDataSetChanged();
+                if (!content.equals("")) {
+                    commentText.setText("");
+                    Comment comment = new Comment();
+                    comment.setContent(content);
+                    comment.setVideo_id(video.getId());
+                    videoDao.addComment(comment);
+                    commentList.clear();
+                    initComment();
+                    adapter.notifyDataSetChanged();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
         }
 
     }
@@ -177,7 +200,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     public void onBackPressed() {
         video.setCount(video.getCount()+1);
         videoDao.updateCount(video,video.getCount());
-        player.release();
         finish();
     }
 
@@ -186,7 +208,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         switch (requestCode){
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(video.getPath()));
+
                 }else{
                     Toast.makeText(this, "拒绝了", Toast.LENGTH_SHORT).show();
                     finish();
@@ -196,50 +218,34 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void initFullScreenDialog() {
-        mFullScreenDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
-            public void onBackPressed() {
-                if (mExoFullScreen) {
-                    closeFullScreenDialog();
-                }
-                super.onBackPressed();
-            }
-        };
-    }
-
-    private void openFullScreenDialog() {
-        ((ViewGroup) playerView.getParent()).removeView(playerView);
-        mFullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ));
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.exo_controls_fullscreen_exit));
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        mExoFullScreen = true;
-        mFullScreenDialog.show();
-    }
-
-    private void closeFullScreenDialog() {
-        ((ViewGroup) playerView.getParent()).removeView(playerView);
-        ((FrameLayout) findViewById(R.id.play_frameLayout)).addView(playerView);
-        mExoFullScreen = false;
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        mFullScreenDialog.dismiss();
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.exo_controls_fullscreen_enter));
-    }
-
-    private void initFullScreenImg() {
-        mFullScreenIcon = (ImageView) findViewById(R.id.exo_fullscreen_enter);
-        mFullScreenIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoFullScreen) {
-                    openFullScreenDialog();
-                }
-                else {
-                    closeFullScreenDialog();
+   /* @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+            if (isShouldHideInput(view, event)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    return imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             }
-        });
+        }
+        return super.dispatchTouchEvent(event);
     }
 
-
+    public boolean isShouldHideInput(View view, MotionEvent event) {
+        if (view != null && view instanceof EditText) {
+            int[] leftTop = {0 , 0};
+            view.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + view.getHeight();
+            int right = left + view.getWidth();
+            if (event.getRawX() > left && event.getRawX() < right && event.getRawY() > top && event.getRawY() < bottom) {
+                return false;
+            }
+            else return true;
+        }
+        return false;
+    }*/
 
 }

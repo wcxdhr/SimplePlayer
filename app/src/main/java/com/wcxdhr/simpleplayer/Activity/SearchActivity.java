@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer;
+package com.wcxdhr.simpleplayer.Activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;

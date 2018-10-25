@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.SurfaceView;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -35,10 +36,11 @@ public class ExoPlayerVideoHandler {
         if (context != null && uri != null && playerView != null) {
             if (!uri.equals(player_uri) || player == null) {
                 player_uri = uri;
+                player = ExoPlayerFactory.newSimpleInstance(context);
                 DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,Util.getUserAgent(context,"SimplePlayer"));
                 MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
                 player.prepare(videoSource);
-
+                isPlayerPlaying = true;
             }
             player.clearVideoSurface();
             player.setVideoSurfaceView((SurfaceView) playerView.getVideoSurfaceView());

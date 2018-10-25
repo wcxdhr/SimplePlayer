@@ -88,7 +88,7 @@ public class VideoDao {
 
     public Cursor getComments(int video_id) {
         db = helper.getWritableDatabase();
-        Cursor cursor = db.query("Comment", null, "video_id=?",new String[]{String.valueOf(video_id)}, null, null,null);
+        Cursor cursor = db.query("Comment", null, "video_id=?",new String[]{String.valueOf(video_id)}, null, null,"id desc");
         return cursor;
     }
 

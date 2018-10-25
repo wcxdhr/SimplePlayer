@@ -2,15 +2,12 @@ package com.wcxdhr.simpleplayer.fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,9 +24,8 @@ import android.widget.Toast;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.VideoPlayerActivity;
+import com.wcxdhr.simpleplayer.Activity.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
-import com.wcxdhr.simpleplayer.db.Category;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
