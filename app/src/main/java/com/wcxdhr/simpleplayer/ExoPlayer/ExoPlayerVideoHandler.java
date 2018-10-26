@@ -30,9 +30,12 @@ public class ExoPlayerVideoHandler {
 
     private boolean isPlayerPlaying;
 
+    private boolean isNewPlay;
+
     private ExoPlayerVideoHandler(){}
 
-    public void prepareExoPlayerForUri(Context context, Uri uri, PlayerView playerView) {
+    public boolean prepareExoPlayerForUri(Context context, Uri uri, PlayerView playerView) {
+        isNewPlay = false;
         if (context != null && uri != null && playerView != null) {
             if (!uri.equals(player_uri) || player == null) {
                 player_uri = uri;
@@ -41,12 +44,14 @@ public class ExoPlayerVideoHandler {
                 MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
                 player.prepare(videoSource);
                 isPlayerPlaying = true;
+                isNewPlay = true;
             }
             player.clearVideoSurface();
             player.setVideoSurfaceView((SurfaceView) playerView.getVideoSurfaceView());
             player.seekTo(player.getCurrentPosition()+1);
             playerView.setPlayer(player);
         }
+        return isNewPlay;
     }
 
     public void releaseVideoPlayer() {

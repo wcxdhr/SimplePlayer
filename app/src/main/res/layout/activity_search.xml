@@ -13,19 +13,22 @@
         <Spinner
             android:id="@+id/search_sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:entries="@array/search_range"
             android:gravity="center_horizontal"></Spinner>
         <EditText
             android:id="@+id/search_text"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrey"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/search_btn"
+            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="搜索"/>
+            android:text="搜索"
+            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
 

@@ -25,15 +25,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     private Context context;
 
+    private int mSelection = 0;
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View categoryView;
         TextView categoryName;
+        View categoryLine;
 
         public ViewHolder(View view) {
             super(view);
             categoryView = view;
             categoryName = (TextView) view.findViewById(R.id.list_name);
+            categoryLine = (View) view.findViewById(R.id.select_line);
         }
     }
 
@@ -49,6 +53,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.categoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setmSelection();
                 Category category = mCategoryList.get(holder.getAdapterPosition());
                 FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                 VideoListFragment videoListFragment = (VideoListFragment)manager.findFragmentById(R.id.video_list_fragment);
@@ -68,6 +73,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         else {
             holder.categoryView.setBackground(context.getResources().getDrawable(R.color.colorBlack));
         }*/
+        if (mSelection == position) {
+            holder.categoryLine.setBackground(context.getResources().getDrawable(R.color.colorWhite));
+        }
+        else {
+            holder.categoryLine.setBackground(context.getResources().getDrawable(R.color.colorPrimary));
+        }
         Category category = mCategoryList.get(position);
         holder.categoryName.setText(category.getName());
         Log.d("bind", category.getName());
@@ -76,5 +87,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public int getItemCount(){
         return mCategoryList.size();
+    }
+
+    public int getmSelection() {
+        return mSelection;
+    }
+
+    public void setmSelection(int mSelection) {
+        this.mSelection = mSelection;
+        notifyDataSetChanged();
     }
 }

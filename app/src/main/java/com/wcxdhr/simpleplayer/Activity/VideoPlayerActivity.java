@@ -120,8 +120,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
 
         playerView = (PlayerView) findViewById(R.id.player_view);
         if (video.getPath() != null && playerView != null) {
-            ExoPlayerVideoHandler.getInstance()
-                    .prepareExoPlayerForUri(this, Uri.parse(video.getPath()), playerView);
+            if (ExoPlayerVideoHandler.getInstance()
+                    .prepareExoPlayerForUri(this, Uri.parse(video.getPath()), playerView)) {
+                video.setCount(video.getCount()+1);
+                videoDao.updateCount(video,video.getCount());
+            }
             ExoPlayerVideoHandler.getInstance().goToForeground();
 
             mFullScreenIcon.setOnClickListener(new View.OnClickListener() {
@@ -196,12 +199,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         videoCount.setText(String.valueOf(video.getCount()));
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
-        video.setCount(video.getCount()+1);
-        videoDao.updateCount(video,video.getCount());
+
         finish();
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){

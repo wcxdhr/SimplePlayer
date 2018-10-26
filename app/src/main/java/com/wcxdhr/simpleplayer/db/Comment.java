@@ -8,6 +8,8 @@ public class Comment {
 
     private int video_id;
 
+    private String send_time;
+
     public int getId() {
         return id;
     }
@@ -30,5 +32,13 @@ public class Comment {
 
     public void setVideo_id(int video_id) {
         this.video_id = video_id;
+    }
+
+    public String getSend_time() {
+        return send_time;
+    }
+
+    public void setSend_time(String send_time) {
+        this.send_time = send_time;
     }
 }
