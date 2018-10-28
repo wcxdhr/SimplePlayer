@@ -27,11 +27,15 @@ public class FullScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_full_screen);
 
         video = (Video) getIntent().getParcelableExtra("video_data");
         ExoFullScreenIcon = findViewById(R.id.exo_fullscreen_enter);
+        ExoFullScreenIcon.setImageResource(R.drawable.exo_controls_fullscreen_exit);
     }
 
     @Override
@@ -42,6 +46,7 @@ public class FullScreenActivity extends AppCompatActivity {
         PlayerView playerView = (PlayerView) findViewById(R.id.player_view);
         ExoPlayerVideoHandler.getInstance()
                 .prepareExoPlayerForUri(getApplicationContext(), Uri.parse(video.getPath()), playerView);
+        playerView.setPlayer(ExoPlayerVideoHandler.getInstance().getPlayer());
         ExoPlayerVideoHandler.getInstance().goToForeground();
         ExoFullScreenIcon.setOnClickListener(new View.OnClickListener() {
             @Override

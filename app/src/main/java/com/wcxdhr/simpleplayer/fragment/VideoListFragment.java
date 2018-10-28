@@ -31,6 +31,7 @@ import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -53,6 +54,8 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
     private int category;
 
     private Bitmap bitmap;
+
+    public static final String[] nameList = new String[]{"Root","Sameen Shaw", "John Reese", "Harold Finch", "The Machine", "Bear"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -199,7 +202,8 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
                     if (cursor.moveToFirst()){
                         Video video = new Video();
                         video.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)));
-                        video.setAuthor(cursor.getString((cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST))));
+                        Random random = new Random();
+                        video.setAuthor(nameList[random.nextInt(6)]);
                         video.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
                         video.setCount(0);
                         SharedPreferences preferences = getActivity().getSharedPreferences("data", MODE_PRIVATE);

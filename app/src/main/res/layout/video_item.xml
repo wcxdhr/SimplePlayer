@@ -25,28 +25,34 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/video_name_small"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:padding="2dp"
-                android:textSize="20dp"
-                />
+                android:layout_margin="2dp">
+                <TextView
+                    android:id="@+id/video_name_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:padding="2dp"
+                    android:textSize="15dp"
+                    />
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="2dp">
+                android:layout_margin="2dp">
                 <ImageView
                     android:background="@drawable/ic_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/video_author_small"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textStyle="bold"
@@ -56,8 +62,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp">
                 <ImageView
                     android:background="@drawable/ic_eye"
                     android:layout_width="wrap_content"

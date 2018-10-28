@@ -20,11 +20,13 @@ public class CommentAdapter extends RecyclerView.Adapter <CommentAdapter.ViewHol
 
         View CommentView;
         TextView CommentText;
+        TextView CommentTime;
 
         public ViewHolder(View view) {
             super(view);
             CommentView = view;
             CommentText = (TextView)view.findViewById(R.id.comment_content);
+            CommentTime = (TextView)view.findViewById(R.id.comment_time);
         }
     }
 
@@ -44,6 +46,7 @@ public class CommentAdapter extends RecyclerView.Adapter <CommentAdapter.ViewHol
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, int position) {
         Comment comment = mCommentList.get(position);
         holder.CommentText.setText(comment.getContent());
+        holder.CommentTime.setText(comment.getSend_time());
 
     }
 

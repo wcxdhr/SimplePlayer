@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.SurfaceView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -48,10 +49,13 @@ public class ExoPlayerVideoHandler {
             }
             player.clearVideoSurface();
             player.setVideoSurfaceView((SurfaceView) playerView.getVideoSurfaceView());
-            player.seekTo(player.getCurrentPosition()+1);
-            playerView.setPlayer(player);
+            //player.seekTo(player.getCurrentPosition()+1);
         }
         return isNewPlay;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void releaseVideoPlayer() {
@@ -64,7 +68,7 @@ public class ExoPlayerVideoHandler {
     public void goToBackground() {
         if (player != null) {
             isPlayerPlaying = player.getPlayWhenReady();
-            player.setPlayWhenReady(false);
+            //player.setPlayWhenReady(false);
         }
     }
 

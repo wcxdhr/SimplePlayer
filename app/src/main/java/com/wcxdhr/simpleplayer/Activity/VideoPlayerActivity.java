@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +41,9 @@ import com.wcxdhr.simpleplayer.db.Comment;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class VideoPlayerActivity extends AppCompatActivity implements View.OnClickListener{
@@ -85,6 +88,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         mFullScreenIcon = (ImageView) findViewById(R.id.exo_fullscreen_enter);
         Button sendBtn = (Button) findViewById(R.id.send_btn);
         commentText = (EditText) findViewById(R.id.comment_text);
+
         RecyclerView commentView = (RecyclerView) findViewById(R.id.video_comment);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         adapter = new CommentAdapter(commentList);
@@ -125,6 +129,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                 video.setCount(video.getCount()+1);
                 videoDao.updateCount(video,video.getCount());
             }
+            playerView.setPlayer(ExoPlayerVideoHandler.getInstance().getPlayer());
             ExoPlayerVideoHandler.getInstance().goToForeground();
 
             mFullScreenIcon.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +137,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                 public void onClick(View v) {
                     Intent intent = new Intent(VideoPlayerActivity.this, FullScreenActivity.class);
                     intent.putExtra("video_data", video);
+
                     startActivity(intent);
                 }
             });
@@ -162,6 +168,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                     Comment comment = new Comment();
                     comment.setContent(content);
                     comment.setVideo_id(video.getId());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = new Date(System.currentTimeMillis());
+                    comment.setSend_time(simpleDateFormat.format(date));
                     videoDao.addComment(comment);
                     commentList.clear();
                     initComment();
@@ -185,6 +194,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                     comment.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
                     comment.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
                     comment.setVideo_id(cursor.getInt(cursor.getColumnIndexOrThrow("video_id")));
+                    comment.setSend_time(cursor.getString(cursor.getColumnIndexOrThrow("send_time")));
                     commentList.add(comment);
                 }while (cursor.moveToNext());
             }

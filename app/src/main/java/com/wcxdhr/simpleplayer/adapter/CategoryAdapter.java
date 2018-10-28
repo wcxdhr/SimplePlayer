@@ -53,8 +53,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.categoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setmSelection();
                 Category category = mCategoryList.get(holder.getAdapterPosition());
+                setmSelection(holder.getAdapterPosition());
                 FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                 VideoListFragment videoListFragment = (VideoListFragment)manager.findFragmentById(R.id.video_list_fragment);
                 LogUtil.d("CategoryAdapter: "+String.valueOf(category.getId()));

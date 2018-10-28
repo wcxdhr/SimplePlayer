@@ -21,6 +21,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_COMMENT = "create table Comment("
             +"id integer primary key autoincrement, "
             +"content text, "
+            +"send_time text, "
             +"video_id integer)";
 
     private Context mContext;

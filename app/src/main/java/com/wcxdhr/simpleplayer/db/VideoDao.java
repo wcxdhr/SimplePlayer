@@ -89,6 +89,7 @@ public class VideoDao {
         ContentValues values = new ContentValues();
         values.put("content", comment.getContent());
         values.put("video_id", comment.getVideo_id());
+        values.put("send_time", comment.getSend_time());
         db.insert("Comment",null, values );
     }
 

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.wcxdhr.simpleplayer.R;
@@ -44,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
         sp_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         search_sp.setAdapter(sp_adapter);
         EditText editText = (EditText) findViewById(R.id.search_text);
-        Button searchBtn = (Button) findViewById(R.id.search_btn);
+        ImageButton searchBtn = (ImageButton) findViewById(R.id.search_btn);
         searchView = (RecyclerView) findViewById(R.id.search_result_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         adapter = new VideoAdapter(mVideoList);

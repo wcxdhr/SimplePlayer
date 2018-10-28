@@ -44,7 +44,7 @@
             android:screenOrientation="landscape" />
 
         <receiver
-            android:name=".MyReceiver"
+            android:name=".JPush.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer;
+package com.wcxdhr.simpleplayer.JPush;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
