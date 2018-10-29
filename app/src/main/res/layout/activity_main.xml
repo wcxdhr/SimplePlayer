@@ -29,6 +29,10 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3" />
     <fragment
         android:id="@+id/video_list_fragment"
         android:name="com.wcxdhr.simpleplayer.fragment.VideoListFragment"

@@ -14,9 +14,6 @@
         android:textStyle="bold"
         android:textSize="15dp"
         android:padding="5dp"/>
-        <!--android:clickable="true"
-        android:focusableInTouchMode="true"
-        android:focusable="true"/>-->
 
     <View
         android:id="@+id/select_line"
