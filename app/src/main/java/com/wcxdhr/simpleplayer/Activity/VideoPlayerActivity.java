@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
+import com.wcxdhr.simpleplayer.FloatWindow.FloatWindowService;
 import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.adapter.CommentAdapter;
@@ -121,6 +122,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onResume() {
         super.onResume();
+        Intent stopIntent = new Intent(this, FloatWindowService.class);
+        stopService(stopIntent);
 
         playerView = (PlayerView) findViewById(R.id.player_view);
         if (video.getPath() != null && playerView != null) {
@@ -153,8 +156,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onDestroy() {
+        //ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
+        Intent intent = new Intent(this, FloatWindowService.class);
+        startService(intent);
         super.onDestroy();
-        ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
     }
 
 

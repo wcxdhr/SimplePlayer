@@ -5,13 +5,15 @@
     android:layout_width="200dp"
     android:layout_height="112.5dp">
 
-    <include layout="@layout/play_framelayout" />
+    <include
+        layout="@layout/play_framelayout" />
 
     <ImageButton
         android:id="@+id/cancel_window_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_cancel_window"
+        android:tint="@color/colorWhite"
         android:layout_alignParentLeft="true"/>
 
     <ImageButton
@@ -19,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_open_player"
+        android:tint="@color/colorWhite"
         android:layout_alignParentRight="true"/>
 
 
