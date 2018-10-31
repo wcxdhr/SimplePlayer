@@ -53,7 +53,7 @@ public class FloatWindowView extends RelativeLayout {
         viewWidth = view.getLayoutParams().width;
         viewHeight = view.getLayoutParams().height;
         ImageButton floatWindowCancelBtn = (ImageButton) findViewById(R.id.cancel_window_btn);
-        ImageButton openPlayerBtn = (ImageButton) findViewById(R.id.open_player_btn);
+        //ImageButton openPlayerBtn = (ImageButton) findViewById(R.id.open_player_btn);
         playerView = (PlayerView) findViewById(R.id.player_view);
         playerView.setPlayer(ExoPlayerVideoHandler.getInstance().getPlayer());
         playerView.hideController();
@@ -63,6 +63,12 @@ public class FloatWindowView extends RelativeLayout {
                 playerView.hideController();
             }
         });
+        /*playerView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
         playerView.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -81,6 +87,12 @@ public class FloatWindowView extends RelativeLayout {
                         updateViewPosition();
                         break;
                     case MotionEvent.ACTION_UP:
+                        if (yInDownScreen == yInScreen && xInDownScreen == xInScreen) {
+                            Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                            intent.putExtra("video_data", video);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                            getContext().startActivity(intent);
+                        }
                         break;
                     default:
                         break;
@@ -98,15 +110,12 @@ public class FloatWindowView extends RelativeLayout {
 
             }
         });
-        openPlayerBtn.setOnClickListener(new OnClickListener() {
+        /*openPlayerBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                intent.putExtra("video_data", video);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                getContext().startActivity(intent);
+
             }
-        });
+        });*/
     }
 
     @Override
