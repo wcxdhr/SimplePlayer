@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:id="@+id/float_window_layout"
-    android:layout_width="200dp"
-    android:layout_height="112.5dp">
+    android:layout_width="250dp"
+    android:layout_height="140dp">
 
     <include
         layout="@layout/play_framelayout" />
@@ -13,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_cancel_window"
-        android:tint="@color/colorWhite"
+        android:padding="3dp"
+        android:background="#2f000000"
         android:layout_alignParentLeft="true"/>
 
     <ImageButton
@@ -21,8 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_open_player"
-        android:tint="@color/colorWhite"
+        android:padding="3dp"
+        android:background="#2f000000"
         android:layout_alignParentRight="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>

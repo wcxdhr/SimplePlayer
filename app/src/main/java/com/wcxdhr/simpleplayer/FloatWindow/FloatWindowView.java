@@ -2,6 +2,7 @@ package com.wcxdhr.simpleplayer.FloatWindow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.wcxdhr.simpleplayer.Activity.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
 import com.wcxdhr.simpleplayer.R;
+import com.wcxdhr.simpleplayer.db.Video;
 
 import java.lang.reflect.Field;
 
@@ -42,7 +45,7 @@ public class FloatWindowView extends RelativeLayout {
 
     private PlayerView playerView;
 
-    public FloatWindowView(Context context) {
+    public FloatWindowView(Context context, Video video) {
         super(context);
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.float_window_layout, this);
@@ -53,17 +56,54 @@ public class FloatWindowView extends RelativeLayout {
         ImageButton openPlayerBtn = (ImageButton) findViewById(R.id.open_player_btn);
         playerView = (PlayerView) findViewById(R.id.player_view);
         playerView.setPlayer(ExoPlayerVideoHandler.getInstance().getPlayer());
+        playerView.hideController();
+        playerView.setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+            @Override
+            public void onVisibilityChange(int visibility) {
+                playerView.hideController();
+            }
+        });
+        playerView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        xInView = event.getX();
+                        yInView = event.getY();
+                        xInScreen = event.getRawX();
+                        yInScreen = event.getRawY() - getStatusBarHeight();
+                        xInDownScreen = xInScreen;
+                        yInDownScreen = yInScreen;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        xInScreen = event.getRawX();
+                        yInScreen = event.getRawY() - getStatusBarHeight();
+                        updateViewPosition();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+        ExoPlayerVideoHandler.getInstance().prepareExoPlayerForUri(context, Uri.parse(video.getPath()), playerView);
         ExoPlayerVideoHandler.getInstance().goToForeground();
         floatWindowCancelBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
                 MyWindowManager.removeWindow(getContext());
+
             }
         });
         openPlayerBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                intent.putExtra("video_data", video);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 getContext().startActivity(intent);
             }
         });
@@ -77,15 +117,18 @@ public class FloatWindowView extends RelativeLayout {
                 yInView = event.getY();
                 xInScreen = event.getRawX();
                 yInScreen = event.getRawY() - getStatusBarHeight();
-                xInDownScreen = xInView;
-                yInDownScreen = yInView;
+                xInDownScreen = xInScreen;
+                yInDownScreen = yInScreen;
                 break;
             case MotionEvent.ACTION_MOVE:
                 xInScreen = event.getRawX();
                 yInScreen = event.getRawY() - getStatusBarHeight();
                 updateViewPosition();
                 break;
-            default:break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
         }
         return true;
     }

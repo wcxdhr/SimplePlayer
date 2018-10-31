@@ -123,6 +123,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     public void onResume() {
         super.onResume();
         Intent stopIntent = new Intent(this, FloatWindowService.class);
+        stopIntent.putExtra("video_data", video);
         stopService(stopIntent);
 
         playerView = (PlayerView) findViewById(R.id.player_view);
@@ -140,7 +141,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                 public void onClick(View v) {
                     Intent intent = new Intent(VideoPlayerActivity.this, FullScreenActivity.class);
                     intent.putExtra("video_data", video);
-
                     startActivity(intent);
                 }
             });
@@ -158,6 +158,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     public void onDestroy() {
         //ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
         Intent intent = new Intent(this, FloatWindowService.class);
+        intent.putExtra("video_data", video);
         startService(intent);
         super.onDestroy();
     }

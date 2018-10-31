@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
+import com.wcxdhr.simpleplayer.FloatWindow.FloatWindowService;
 import com.wcxdhr.simpleplayer.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onDestroy() {
+        Intent stopIntent = new Intent(this, FloatWindowService.class);
+        stopService(stopIntent);
+        ExoPlayerVideoHandler.getInstance().releaseVideoPlayer();
+        super.onDestroy();
+    }
+
 
 
 }

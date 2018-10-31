@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.WindowManager;
 
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
+import com.wcxdhr.simpleplayer.db.Video;
 
 public class MyWindowManager {
 
@@ -24,24 +25,27 @@ public class MyWindowManager {
 
     private static int ScreenHeight;
 
-    public static void createWindow(Context context) {
+    public static void createWindow(Context context, Video video) {
         setmWindowManager(context);
         DisplayMetrics metrics = new DisplayMetrics();
         mWindowManager.getDefaultDisplay().getMetrics(metrics);
-        ScreenHeight = metrics.heightPixels;
+        float scale = metrics.density;
+        ScreenHeight = (int)(metrics.heightPixels/scale + 0.5f);
+        ScreenWidth = (int)(metrics.widthPixels/scale + 0.5f);
         ScreenWidth = metrics.widthPixels;
+        ScreenHeight = metrics.heightPixels;
         if (mWindowView == null) {
-            mWindowView = new FloatWindowView(context);
+            mWindowView = new FloatWindowView(context, video);
             if (layoutParams == null) {
                 layoutParams = new WindowManager.LayoutParams();
                 layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
                 layoutParams.format = PixelFormat.RGBA_8888;
-                layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+                layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                 layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
                 layoutParams.width = FloatWindowView.viewWidth;
                 layoutParams.height = FloatWindowView.viewHeight;
-                layoutParams.x = ScreenWidth;
-                layoutParams.y = ScreenHeight/2;
+                layoutParams.x = ScreenWidth/2 - FloatWindowView.viewWidth/2;
+                layoutParams.y = ScreenHeight/2 - FloatWindowView.viewHeight/2;
             }
             mWindowView.setLayoutParams(layoutParams);
             mWindowManager.addView(mWindowView, layoutParams);
@@ -53,6 +57,7 @@ public class MyWindowManager {
             setmWindowManager(context);
             mWindowManager.removeView(mWindowView);
             mWindowView = null;
+            ExoPlayerVideoHandler.getInstance().goToBackground();
         }
 
     }

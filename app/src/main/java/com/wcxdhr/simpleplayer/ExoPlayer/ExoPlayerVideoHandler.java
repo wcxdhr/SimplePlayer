@@ -40,6 +40,7 @@ public class ExoPlayerVideoHandler {
         if (context != null && uri != null && playerView != null) {
             if (!uri.equals(player_uri) || player == null) {
                 player_uri = uri;
+                releaseVideoPlayer();
                 player = ExoPlayerFactory.newSimpleInstance(context);
                 DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,Util.getUserAgent(context,"SimplePlayer"));
                 MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);

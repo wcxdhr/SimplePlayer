@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
+import com.wcxdhr.simpleplayer.db.Video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ public class FloatWindowService extends Service {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    MyWindowManager.createWindow(getApplicationContext());
+                    Video video = (Video)intent.getParcelableExtra("video_data");
+                    MyWindowManager.createWindow(getApplicationContext(), video);
                 }
             });
         }
