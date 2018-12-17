@@ -18,7 +18,7 @@ public class ExoPlayerVideoHandler {
 
     private static ExoPlayerVideoHandler instance;
 
-    public static ExoPlayerVideoHandler getInstance() {
+    public synchronized static ExoPlayerVideoHandler getInstance() {
         if (instance == null) {
             instance = new ExoPlayerVideoHandler();
         }

@@ -27,8 +27,8 @@
         <ImageButton
             android:id="@+id/search_btn"
             android:background="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_search"
             android:textColor="@color/colorWhite"/>
 
@@ -41,6 +41,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         <android.support.v7.widget.RecyclerView
+            android:background="@color/colorGrey"
             android:id="@+id/search_result_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

@@ -57,10 +57,18 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
 
     public static final String[] nameList = new String[]{"Root","Sameen Shaw", "John Reese", "Harold Finch", "The Machine", "Bear"};
 
+    public static VideoListFragment newInstance(int page) {
+        Bundle args = new Bundle();
+        args.putInt("ARG_PAGE", page);
+        VideoListFragment videoListFragment = new VideoListFragment();
+        videoListFragment.setArguments(args);
+        return videoListFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.videolist_frag, container, false);
-        category = 1;
+        category = getArguments().getInt("ARG_PAGE");
         addVideotoList(category);
         //showRecyclerView();
         recyclerView = (RecyclerView) view.findViewById(R.id.videolist_view);

@@ -27,9 +27,7 @@ public class CategoryFragment extends Fragment {
 
     private View view;
 
-    public static final String TAG = "TEST";
-
-    private List<Category> CategoryList = new ArrayList<>();
+    private ArrayList<Category> CategoryList = new ArrayList<>();
 
     private VideoDao videoDao;
 

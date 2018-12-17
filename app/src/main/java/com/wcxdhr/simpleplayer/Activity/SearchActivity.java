@@ -51,6 +51,7 @@ public class SearchActivity extends AppCompatActivity {
         adapter = new VideoAdapter(mVideoList);
         searchView.setLayoutManager(layoutManager);
         searchView.setAdapter(adapter);
+        searchView.setVisibility(RecyclerView.INVISIBLE);
         choose_range_flag = CHOOSE_NAME;
         search_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -121,5 +122,6 @@ public class SearchActivity extends AppCompatActivity {
         }
         cursor.close();
         adapter.notifyDataSetChanged();
+        searchView.setVisibility(RecyclerView.VISIBLE);
     }
 }

@@ -56,9 +56,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 Category category = mCategoryList.get(holder.getAdapterPosition());
                 setmSelection(holder.getAdapterPosition());
                 FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
-                VideoListFragment videoListFragment = (VideoListFragment)manager.findFragmentById(R.id.video_list_fragment);
-                LogUtil.d("CategoryAdapter: "+String.valueOf(category.getId()));
-                videoListFragment.refresh(category.getId());
+//                VideoListFragment videoListFragment = (VideoListFragment)manager.findFragmentById(R.id.video_list_fragment);
+//                LogUtil.d("CategoryAdapter: "+String.valueOf(category.getId()));
+//                videoListFragment.refresh(category.getId());
             }
         });
         //CategoryAdapter.ViewHolder holder = new CategoryAdapter.ViewHolder(view);
