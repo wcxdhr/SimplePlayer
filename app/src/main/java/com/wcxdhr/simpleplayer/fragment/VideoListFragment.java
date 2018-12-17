@@ -70,7 +70,6 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
         view = inflater.inflate(R.layout.videolist_frag, container, false);
         category = getArguments().getInt("ARG_PAGE");
         addVideotoList(category);
-        //showRecyclerView();
         recyclerView = (RecyclerView) view.findViewById(R.id.videolist_view);
         LayoutManager = new LinearLayoutManager(getActivity());
         adapter = new VideoAdapter(VideoList);
@@ -163,23 +162,26 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
 
     private void addVideotoList(int category){
         LogUtil.d("addVideotoList: "+String.valueOf(category));
-        videoDao = new VideoDao(getContext());
-        Cursor cursor = videoDao.getVideos(category);
-        if (cursor.getCount() > 0) {
-            if (cursor.moveToFirst()) {
-                do {
-                    Video video = new Video();
-                    video.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
-                    video.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow("author")));
-                    video.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
-                    video.setCount(cursor.getInt(cursor.getColumnIndexOrThrow("count")));
-                    video.setPath(cursor.getString(cursor.getColumnIndexOrThrow("path")));
-                    video.setCategory(category);
-                    VideoList.add(video);
-                } while (cursor.moveToNext());
+        if (VideoList.size() == 0) {
+            videoDao = new VideoDao(getContext());
+            Cursor cursor = videoDao.getVideos(category);
+            if (cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Video video = new Video();
+                        video.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                        video.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow("author")));
+                        video.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                        video.setCount(cursor.getInt(cursor.getColumnIndexOrThrow("count")));
+                        video.setPath(cursor.getString(cursor.getColumnIndexOrThrow("path")));
+                        video.setCategory(category);
+                        VideoList.add(video);
+                    } while (cursor.moveToNext());
+                }
             }
+            cursor.close();
+
         }
-        cursor.close();
     }
 
     private void chooseVideo(){
