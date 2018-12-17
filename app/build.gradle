@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'simplePlayer'
+            storeFile file('../simplePlayer.jks')
+            storePassword 'simplePlayer'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.wcxdhr.simpleplayer"
