@@ -5,7 +5,7 @@ import org.litepal.crud.LitePalSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Category extends LitePalSupport {
+public class Category {
 
     private String name;
 
