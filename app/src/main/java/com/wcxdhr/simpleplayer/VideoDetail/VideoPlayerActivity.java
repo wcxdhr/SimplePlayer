@@ -1,38 +1,26 @@
-package com.wcxdhr.simpleplayer.Activity;
+package com.wcxdhr.simpleplayer.VideoDetail;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
 import com.wcxdhr.simpleplayer.FloatWindow.FloatWindowService;
 import com.wcxdhr.simpleplayer.Log.LogUtil;
@@ -62,10 +50,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
     private TextView videoCount;
 
     private PlayerView playerView;
-
-    /*private SimpleExoPlayer player;
-
-    private MediaSource videoSource;*/
 
     private EditText commentText;
 
@@ -215,11 +199,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         videoCount.setText(String.valueOf(video.getCount()));
     }
 
-    /*@Override
-    public void onBackPressed() {
-
-        finish();
-    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
@@ -265,5 +244,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
         }
         return false;
     }*/
+
 
 }

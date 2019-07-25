@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer.fragment;
+package com.wcxdhr.simpleplayer.VideoList;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -11,11 +11,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import android.widget.Toast;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.Activity.VideoPlayerActivity;
+import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
@@ -191,14 +192,6 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
         LogUtil.d("存在本地的category："+String.valueOf(category));
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 1);
-                /*Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                String[] projections = {
-                        MediaStore.Video.Media.DISPLAY_NAME,
-                        MediaStore.Video.Media.DATA,
-                };
-                Cursor cursor = getActivity().getContentResolver().query(uri,projections,null,null,null);
-
-                    while ()*/
 
     }
 

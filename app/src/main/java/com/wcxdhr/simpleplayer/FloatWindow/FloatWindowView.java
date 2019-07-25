@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.wcxdhr.simpleplayer.Activity.VideoPlayerActivity;
+import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.db.Video;

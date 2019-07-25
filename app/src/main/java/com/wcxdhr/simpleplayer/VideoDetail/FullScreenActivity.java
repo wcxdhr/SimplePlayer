@@ -1,10 +1,7 @@
-package com.wcxdhr.simpleplayer.Activity;
+package com.wcxdhr.simpleplayer.VideoDetail;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -30,7 +27,6 @@ public class FullScreenActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_full_screen);
 
         video = (Video) getIntent().getParcelableExtra("video_data");

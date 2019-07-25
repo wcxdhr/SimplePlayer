@@ -27,7 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MainActivity"
+        <activity android:name=".VideoList.MainActivity"
             android:theme="@style/Anim_fade"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
@@ -37,13 +37,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.VideoPlayerActivity"
+            android:name=".VideoDetail.VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".VideoSearch.SearchActivity" />
         <activity
-            android:name=".Activity.FullScreenActivity"
+            android:name=".VideoDetail.FullScreenActivity"
             android:screenOrientation="landscape" />
 
         <receiver

@@ -1,9 +1,8 @@
 package com.wcxdhr.simpleplayer.adapter;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
-import com.bumptech.glide.request.RequestOptions;
+
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.db.Video;
 
@@ -26,16 +25,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     private Context mContext;
 
-    //private OnLongItemClickListener mOnLongItemClickListener = null;
-
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
         void onItemLongClick(View view , int position);
     }
-
-    /*public static interface OnLongItemClickListener {
-        void onLongItemClick(View view, int position);
-    }*/
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView video_name;
@@ -65,14 +58,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         final ViewHolder holder = new ViewHolder(view);
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SharedPreferences editor = context.getSharedPreferences("data", Context.MODE_PRIVATE);
-                editor
-            }
-        });*/
         return holder;
     }
 
@@ -113,7 +98,4 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         this.mOnVideoItemClickListener = listener;
     }
 
-    /*public void setOnLongItemClickListener(OnLongItemClickListener listener) {
-        this.mOnLongItemClickListener = listener;
-    }*/
 }

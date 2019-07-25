@@ -7,13 +7,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.wcxdhr.simpleplayer.Activity.VideoPlayerActivity;
-import com.wcxdhr.simpleplayer.Log.LogUtil;
+import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.db.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import cn.jpush.android.api.JPushInterface;
 
