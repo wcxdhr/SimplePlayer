@@ -26,8 +26,8 @@ import com.wcxdhr.simpleplayer.FloatWindow.FloatWindowService;
 import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.adapter.CommentAdapter;
-import com.wcxdhr.simpleplayer.db.Comment;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Comment;
+import com.wcxdhr.simpleplayer.data.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import java.text.SimpleDateFormat;
@@ -157,10 +157,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                     commentText.setText("");
                     Comment comment = new Comment();
                     comment.setContent(content);
-                    comment.setVideo_id(video.getId());
+                    comment.setVideoId(video.getId());
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date(System.currentTimeMillis());
-                    comment.setSend_time(simpleDateFormat.format(date));
+                    comment.setSendTime(simpleDateFormat.format(date));
                     videoDao.addComment(comment);
                     commentList.clear();
                     initComment();
@@ -183,8 +183,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements View.OnCli
                     Comment comment = new Comment();
                     comment.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
                     comment.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
-                    comment.setVideo_id(cursor.getInt(cursor.getColumnIndexOrThrow("video_id")));
-                    comment.setSend_time(cursor.getString(cursor.getColumnIndexOrThrow("send_time")));
+                    comment.setVideoId(cursor.getInt(cursor.getColumnIndexOrThrow("video_id")));
+                    comment.setSendTime(cursor.getString(cursor.getColumnIndexOrThrow("send_time")));
                     commentList.add(comment);
                 }while (cursor.moveToNext());
             }

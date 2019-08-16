@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import java.util.ArrayList;

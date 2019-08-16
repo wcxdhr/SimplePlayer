@@ -1,11 +1,15 @@
-package com.wcxdhr.simpleplayer.db;
+package com.wcxdhr.simpleplayer.data;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "videos")
 public class Video implements Parcelable{
 
+    @PrimaryKey
     private int id;
 
     private String name;

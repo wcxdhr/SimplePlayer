@@ -1,16 +1,13 @@
 package com.wcxdhr.simpleplayer.FloatWindow;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.text.BoringLayout;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.WindowManager;
 
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Video;
 
 public class MyWindowManager {
 

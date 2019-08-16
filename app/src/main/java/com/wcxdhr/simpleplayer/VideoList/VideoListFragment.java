@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
@@ -27,7 +27,7 @@ import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
 import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
 import java.util.ArrayList;

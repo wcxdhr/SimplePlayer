@@ -4,10 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
+import com.wcxdhr.simpleplayer.data.Comment;
+import com.wcxdhr.simpleplayer.data.Video;
 
 public class VideoDao {
 
@@ -88,8 +89,8 @@ public class VideoDao {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("content", comment.getContent());
-        values.put("video_id", comment.getVideo_id());
-        values.put("send_time", comment.getSend_time());
+        values.put("video_id", comment.getVideoId());
+        values.put("send_time", comment.getSendTime());
         db.insert("Comment",null, values );
     }
 

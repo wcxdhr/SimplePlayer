@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Video;
 
 import java.util.List;
 

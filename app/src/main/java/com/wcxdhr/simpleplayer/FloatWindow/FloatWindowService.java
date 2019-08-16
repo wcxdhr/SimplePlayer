@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
-import com.wcxdhr.simpleplayer.db.Video;
+import com.wcxdhr.simpleplayer.data.Video;
 
 import java.util.ArrayList;
 import java.util.List;

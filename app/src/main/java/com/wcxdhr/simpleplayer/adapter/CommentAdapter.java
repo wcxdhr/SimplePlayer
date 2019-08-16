@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.db.Comment;
+import com.wcxdhr.simpleplayer.data.Comment;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class CommentAdapter extends RecyclerView.Adapter <CommentAdapter.ViewHol
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, int position) {
         Comment comment = mCommentList.get(position);
         holder.CommentText.setText(comment.getContent());
-        holder.CommentTime.setText(comment.getSend_time());
+        holder.CommentTime.setText(comment.getSendTime());
 
     }
 
