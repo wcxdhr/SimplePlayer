@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer.VideoList;
+package com.wcxdhr.simpleplayer.videolist;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.wcxdhr.simpleplayer.Log.LogUtil;
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
+import com.wcxdhr.simpleplayer.videodetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.adapter.VideoAdapter;
 import com.wcxdhr.simpleplayer.data.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
@@ -36,7 +36,7 @@ import java.util.Random;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class VideoListFragment extends Fragment implements View.OnClickListener {
+public class OldVideoListFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
@@ -58,10 +58,10 @@ public class VideoListFragment extends Fragment implements View.OnClickListener 
 
     public static final String[] nameList = new String[]{"Root","Sameen Shaw", "John Reese", "Harold Finch", "The Machine", "Bear"};
 
-    public static VideoListFragment newInstance(int page) {
+    public static OldVideoListFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt("ARG_PAGE", page);
-        VideoListFragment videoListFragment = new VideoListFragment();
+        OldVideoListFragment videoListFragment = new OldVideoListFragment();
         videoListFragment.setArguments(args);
         return videoListFragment;
     }

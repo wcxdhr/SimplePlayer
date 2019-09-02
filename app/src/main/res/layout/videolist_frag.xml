@@ -8,7 +8,9 @@
         android:id="@+id/videolist_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_weight="8">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <RelativeLayout
         android:layout_width="match_parent"

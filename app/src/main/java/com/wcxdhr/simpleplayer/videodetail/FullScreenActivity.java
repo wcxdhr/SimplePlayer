@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer.VideoDetail;
+package com.wcxdhr.simpleplayer.videodetail;
 
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;

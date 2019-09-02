@@ -1,4 +1,4 @@
-package com.wcxdhr.simpleplayer.VideoList;
+package com.wcxdhr.simpleplayer.videolist;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.wcxdhr.simpleplayer.ExoPlayer.ExoPlayerVideoHandler;
 import com.wcxdhr.simpleplayer.FloatWindow.FloatWindowService;
 import com.wcxdhr.simpleplayer.R;
-import com.wcxdhr.simpleplayer.VideoSearch.SearchActivity;
+import com.wcxdhr.simpleplayer.videosearch.SearchActivity;
 import com.wcxdhr.simpleplayer.adapter.PageAdapter;
 import com.wcxdhr.simpleplayer.db.Category;
 import com.wcxdhr.simpleplayer.db.VideoDao;
@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     protected void initViews() {
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.my_vp);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.my_vp);
         pageAdapter = new PageAdapter(getSupportFragmentManager(), mTitles);
         viewPager.setAdapter(pageAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        ImageView searchImg = (ImageView) findViewById(R.id.searchActivity_img);
+        ImageView searchImg = findViewById(R.id.searchActivity_img);
         searchImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

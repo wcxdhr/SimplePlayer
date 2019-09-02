@@ -27,7 +27,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VideoList.MainActivity"
+        <activity android:name=".videolist.VideoListActivity"></activity>
+        <activity
+            android:name=".videolist.MainActivity"
             android:theme="@style/Anim_fade"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
@@ -37,13 +39,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".VideoDetail.VideoPlayerActivity"
+            android:name=".videodetail.VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".VideoSearch.SearchActivity" />
+        <activity android:name=".videosearch.SearchActivity" />
         <activity
-            android:name=".VideoDetail.FullScreenActivity"
+            android:name=".videodetail.FullScreenActivity"
             android:screenOrientation="landscape" />
 
         <receiver
@@ -65,7 +67,7 @@
         <service
             android:name=".FloatWindow.FloatWindowService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

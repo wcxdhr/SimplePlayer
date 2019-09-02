@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VideoDetail.FullScreenActivity">
+    tools:context=".videodetail.FullScreenActivity">
 
     <include layout="@layout/play_framelayout" />
 

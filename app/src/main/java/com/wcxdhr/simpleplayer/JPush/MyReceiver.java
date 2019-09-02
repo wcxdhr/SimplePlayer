@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.wcxdhr.simpleplayer.VideoDetail.VideoPlayerActivity;
+import com.wcxdhr.simpleplayer.videodetail.VideoPlayerActivity;
 import com.wcxdhr.simpleplayer.data.Video;
 import com.wcxdhr.simpleplayer.db.VideoDao;
 
